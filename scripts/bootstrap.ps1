@@ -16,6 +16,43 @@ Copy-Item -Recurse -Force (Join-Path $kit ".github\agents\*") (Join-Path $root "
 Copy-Item -Force (Join-Path $kit ".github\copilot-instructions.md") (Join-Path $root "copilot-instructions.md")
 Copy-Item -Force (Join-Path $kit "AGENTS.md") (Join-Path $root "instructions\agents.instructions.md")
 
+$org = Join-Path $kit "library\cloud-engineering-org"
+if (Test-Path (Join-Path $org "agents")) {
+    Copy-Item -Recurse -Force (Join-Path $org "agents\*") (Join-Path $root "agents")
+    $mem = Join-Path $root "agent-memory"
+    if (Test-Path $mem) { Remove-Item -Recurse -Force $mem }
+    Copy-Item -Recurse -Force (Join-Path $org "agent-memory") $mem
+    Get-ChildItem (Join-Path $org "skills") -Directory -Filter "*.skill" | ForEach-Object {
+        $name = $_.Name -replace '\.skill$', ''
+        $dest = Join-Path $root "skills\$name"
+        if (Test-Path $dest) {
+            Write-Output "Kept kit skill $name"
+        } else {
+            Copy-Item -Recurse -Force $_.FullName $dest
+        }
+    }
+    $needle = "./agent-memory/"
+    $replacement = ($mem -replace '\\', '/') + "/"
+    Get-ChildItem (Join-Path $root "agents") -Filter *.agent.md | ForEach-Object {
+        $text = Get-Content $_.FullName -Raw
+        if ($text -like "*$needle*") {
+            Set-Content -Path $_.FullName -Value ($text.Replace($needle, $replacement)) -Encoding utf8 -NoNewline
+        }
+    }
+    @(
+        "# Cloud engineering org"
+        ""
+        "The cloud engineering agents in the user profile call each other by display name. Keep the whole set installed."
+        "Their knowledge files are in ``$mem``."
+        "If an agent says ``./agent-memory/``, read that path under the user profile, not the current repo."
+        "Use the kit skill ``iac-review``. Do not look for a second skill with that name."
+        "Archie is the default lead. Archie routes Microsoft cloud work and does work that has no specialist."
+        "Some listed tools are VS Code or MCP only. Skip a tool that is not available."
+        ""
+    ) | Set-Content -Path (Join-Path $root "instructions\cloud-engineering-org.instructions.md") -Encoding utf8
+    Write-Output "Installed cloud engineering org into $root"
+}
+
 $settingsPath = Join-Path $root "settings.json"
 $raw = if (Test-Path $settingsPath) { Get-Content $settingsPath -Raw } else { "{}" }
 if ($raw -notmatch '"memory"\s*:\s*true') {

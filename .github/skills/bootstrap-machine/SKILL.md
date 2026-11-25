@@ -55,6 +55,7 @@ Profile copy:
 
 - `.github/skills/` to `skills/`
 - `.github/agents/` to `agents/`
+- `library/cloud-engineering-org/` agents, knowledge, and skills into the same profile. Kit skills win on a name clash. `iac-review` stays the kit skill.
 - `.github/copilot-instructions.md` to `copilot-instructions.md`
 - `AGENTS.md` to `instructions/agents.instructions.md`
 
@@ -84,6 +85,6 @@ copilot skill list
 copilot instruction list
 ```
 
-Confirm the kit skills are personal, and personal instructions are listed. Report the version line for git, gh, az, dotnet, pwsh, bicep, node, terraform, and aws. Say which tools failed. Tell the user to start a new session and run `copilot --agent devops-enablement`.
+Confirm the kit skills are personal, and personal instructions are listed. Report the version line for git, gh, az, dotnet, pwsh, bicep, node, terraform, and aws. Say which tools failed. Tell the user to start a new session and run `copilot --agent Archie`.
 
 A session that was already open will not see the new files until it restarts.

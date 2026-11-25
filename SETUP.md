@@ -10,7 +10,7 @@ if it is not there (Windows: %USERPROFILE%\source\copilot-kit).
 Then follow .github/skills/bootstrap-machine/SKILL.md and set up this machine.
 ```
 
-Assume the repo is not cloned. The skill creates `~/source` or `%USERPROFILE%\source`, clones the kit there, then runs the bootstrap script. That script installs the Copilot profile, upgrades dev tools, and imports `memories.jsonl`. Re-run it to update. Do not commit the user profile. Do not sign in to GitHub or Azure unless you mean to.
+Assume the repo is not cloned. The skill creates `~/source` or `%USERPROFILE%\source`, clones the kit there, then runs the bootstrap script. That script installs the Copilot profile, the cloud engineering org from `library/cloud-engineering-org`, upgrades dev tools, and imports `memories.jsonl`. Re-run it to update. Do not commit the user profile. Do not sign in to GitHub or Azure unless you mean to.
 
 Personal files live under `$COPILOT_HOME`, or `~/.copilot` when that variable is unset.
 

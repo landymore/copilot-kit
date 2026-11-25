@@ -11,7 +11,9 @@ The repo is the bootstrap source. After you run setup, Copilot loads the install
 | `AGENTS.md` | How Copilot should work in this repo |
 | `.github/copilot-instructions.md` | Always-on rules for CI, IaC, docs, and cross-platform edits |
 | `.github/skills/` | Project skills. Each folder has a `SKILL.md` |
-| `.github/agents/devops-enablement.agent.md` | Custom agent for enablement work |
+| `.github/agents/archie.agent.md` | Archie, the default lead. Routes Microsoft cloud work, and does the rest |
+| `.github/agents/devops-enablement.agent.md` | GitHub transformation and kit procedures |
+| `library/cloud-engineering-org/` | Full specialist org. Installed into the user profile |
 | `scripts/bootstrap.sh` | macOS / Linux install into `~/.copilot` |
 | `scripts/bootstrap.ps1` | Windows install into `%USERPROFILE%\.copilot` |
 | `SETUP.md` | What the scripts copy, plus MCP config |
@@ -20,7 +22,7 @@ The repo is the bootstrap source. After you run setup, Copilot loads the install
 Skills:
 
 - `github-actions-review` — workflow permissions, pinning, secrets
-- `iac-review` — Terraform and Bicep
+- `iac-review` — Terraform, Bicep, and the same safety checks for CloudFormation and Helm
 - `pipeline-debug` — a failing Actions run
 - `release-notes` — notes since the last tag
 - `security-scan-triage` — Dependabot, code scanning, secret scanning
@@ -39,7 +41,7 @@ if it is not there (Windows: %USERPROFILE%\source\copilot-kit).
 Then follow .github/skills/bootstrap-machine/SKILL.md and set up this machine.
 ```
 
-The repo will not be on the machine yet. Copilot creates `~/source` or `%USERPROFILE%\source` if needed, clones the kit there, and runs the bootstrap script. That copies skills, the agent, and instructions into your user profile, upgrades the dev tools, and imports `memories.jsonl`. Start a new Copilot session after that. The installed copy then loads in every repo on that machine.
+The repo will not be on the machine yet. Copilot creates `~/source` or `%USERPROFILE%\source` if needed, clones the kit there, and runs the bootstrap script. That copies skills, agents, the cloud engineering org, and instructions into your user profile, upgrades the dev tools, and imports `memories.jsonl`. Start a new Copilot session after that. The installed copy then loads in every repo on that machine.
 
 You can run the same install yourself.
 
@@ -60,12 +62,12 @@ git clone https://github.com/landymore/copilot-kit.git $dest
 & (Join-Path $dest "scripts\bootstrap.ps1")
 ```
 
-The script copies skills, the agent, and instructions into `$COPILOT_HOME`, or `~/.copilot` when that is unset. On Windows that is `%USERPROFILE%\.copilot`. It upgrades Git, GitHub CLI, Azure CLI, the .NET SDK, PowerShell 7, Bicep, Node.js, Terraform, and AWS CLI with Homebrew or winget. It imports `memories.jsonl`. Re-run the script after you change this repo. It does not sign in to GitHub or Azure, and it does not copy MCP config.
+The script copies skills, the agent, and instructions into `$COPILOT_HOME`, or `~/.copilot` when that is unset. On Windows that is `%USERPROFILE%\.copilot`. It also installs `library/cloud-engineering-org` there: every agent, its knowledge, and its skills. Those agents call each other, so the script installs the whole set. Knowledge links are rewritten to that profile path. The kit `iac-review` skill is kept. It upgrades Git, GitHub CLI, Azure CLI, the .NET SDK, PowerShell 7, Bicep, Node.js, Terraform, and AWS CLI with Homebrew or winget. It imports `memories.jsonl`. Re-run the script after you change this repo. It does not sign in to GitHub or Azure, and it does not copy MCP config.
 
 Then, from any repo:
 
 ```bash
-copilot --agent devops-enablement
+copilot --agent Archie
 ```
 
 Copilot cloud agent on GitHub does not read your laptop profile. It only sees files committed in the repository it is working on.
@@ -114,6 +116,6 @@ Enterprise Managed Users sign in to the enterprise, not a personal github.com ac
 1. Skim `AGENTS.md` and `.github/copilot-instructions.md`. Edit them in this repo, then re-run the bootstrap script.
 2. Run the bootstrap script once per machine.
 3. In a repo that is not this kit, run `copilot skill list` and `copilot instruction list`.
-4. Start with `copilot --agent devops-enablement`.
+4. Start with `copilot --agent Archie`.
 5. Recreate MCP servers with `copilot mcp add`. Do not commit `mcp-config.json`.
 6. Tag a release if other machines should bootstrap from a known version.

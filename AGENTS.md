@@ -4,7 +4,11 @@ Guidance for Copilot CLI, VS Code, and Copilot cloud agent. Prefer this file for
 
 ## Machine setup
 
-If the user asks to set up this machine, bootstrap Copilot, or install this kit how they like it, follow the `bootstrap-machine` skill. Assume the kit is not cloned yet. Clone it to `~/source/copilot-kit`, or `%USERPROFILE%\source\copilot-kit` on Windows, after creating that source directory if needed. Then run the bootstrap script. That installs the user profile, upgrades the dev tools, and imports `memories.jsonl`. Do not copy this kit into other repositories. Do not run `gh auth login` or `az login` unless the user asks.
+If the user asks to set up this machine, bootstrap Copilot, or install this kit how they like it, follow the `bootstrap-machine` skill. Assume the kit is not cloned yet. Clone it to `~/source/copilot-kit`, or `%USERPROFILE%\source\copilot-kit` on Windows, after creating that source directory if needed. Then run the bootstrap script. That installs the user profile, the cloud engineering org, upgrades the dev tools, and imports `memories.jsonl`. Do not copy this kit into other repositories. Do not run `gh auth login` or `az login` unless the user asks.
+
+## Who to talk to
+
+Archie is the default lead. Archie routes Microsoft cloud work to the cloud engineering org or a division lead, and does work that has no specialist. devops-enablement is only for the kit procedures: Actions review, IaC review, pipeline debug, release notes, scan triage, repo onboarding, and machine bootstrap.
 
 ## Defaults
 
